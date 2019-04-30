@@ -7,27 +7,29 @@
 
 let playerY, playerX;
 let iconSize;
+let movementSpeed;
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
 
 
   iconSize = 20
-  playerX = width/2;
-  playerY = height/2;
+  playerX = round(width/2);
+  playerY = round(height/2);
+  movementSpeed = 2;
 }
 
 function draw() {
   background(0);
-  keyPressed();
-  rect(playerX, playerY, iconSize, iconSize)
+  keyTyped();
+  rect(playerX, playerY, iconSize, iconSize);
 }
 
-function keyPressed() {
-  if (keyCode === LEFT_ARROW) {
-    playerX -= 1
+function keyTyped() {
+  if (key === 'a') {
+    playerX = playerX - movementSpeed;
   }
-  else if (keyCode === RIGHT_ARROW) {
-    playerX += 1
+  else if (key === 'd') {
+    playerX = playerX + movementSpeed;
   }
 }
