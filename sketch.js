@@ -6,30 +6,47 @@
 // - describe what you did to take this project "above and beyond"
 
 let playerY, playerX;
+let invaderY, invaderX;
 let iconSize;
-let movementSpeed;
+let playerMovementSpeed;
 
 function setup() {
-  createCanvas(windowWidth, windowHeight);
+  if (windowWidth > windowHeight) {
+    createCanvas(windowWidth, windowHeight);
+  }
 
 
-  iconSize = 20
+
+  iconSize = 20;
+  playerMovementSpeed = 3;
+
+  invaderX = round(width/2);
+  invaderY = round(height/3);
+
   playerX = round(width/2);
   playerY = round(height/2);
-  movementSpeed = 2;
+
 }
 
 function draw() {
   background(0);
-  keyTyped();
+  testArea(); 
   rect(playerX, playerY, iconSize, iconSize);
+  rect(invaderX, invaderY, iconSize, iconSize);
+  movement();
 }
 
-function keyTyped() {
-  if (key === 'a') {
-    playerX = playerX - movementSpeed;
+function movement() {
+  if (keyIsDown(LEFT_ARROW)) {
+    playerX -= playerMovementSpeed;
   }
-  else if (key === 'd') {
-    playerX = playerX + movementSpeed;
+  else if (keyIsDown(RIGHT_ARROW)) {
+    playerX += playerMovementSpeed;
   }
+}
+
+function testArea() {
+  rectMode(CENTER);
+  fill('red');
+  rect(width/2, height/2, width-100, height) ;
 }
