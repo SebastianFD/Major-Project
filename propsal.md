@@ -9,7 +9,7 @@ Space Invaders, Galatica, Galaga mash-up
 - Invaders & movement
 - Invaders shooting 
 - - destroys player
-- 
+- Multiple Invaders
 
 
 ## Like to have list
