@@ -11,6 +11,7 @@ let playerMovementSpeed;
 let invaderY, invaderX;
 let invaderMovementSpeed;
 let invaderState;
+let invaderTouchesPlayer;
 
 // Other Variables //
 let iconSize;
@@ -20,19 +21,23 @@ let restriction;
 
 function setup() {
   rectMode(CENTER);
-  createCanvas(800, 770);
+  createCanvas(800, 700);
 
+  // Other //
   iconSize = 20;
   screenRestiction = 100;
   restriction = (width - screenRestiction) - iconSize;
 
+  // Invader //
   invaderX = round(width/2);
-  invaderY = round(height/3);
+  invaderY = (iconSize/2)*4;
   invaderMovementSpeed = 1;
   invaderState = 1; 
+  invaderTouchesPlayer = false
 
+  // Player //
   playerX = round(width/2);
-  playerY = round(height/2);
+  playerY = height-iconSize;
   playerMovementSpeed = 3;
 
 }
@@ -40,34 +45,41 @@ function setup() {
 function draw() {
   background(0);
   testArea(); 
-  playerShip()
-  spaceInvader()
-  print(invaderX)
+  playerShip();
+  spaceInvader();
+  print(invaderY);
 }
 
 
 function playerShip() {
   rect(playerX, playerY, iconSize, iconSize);
 
-  // Movement for player//
-  if (keyIsDown(LEFT_ARROW)) {
-    playerX -= playerMovementSpeed;
+  // Ship Movement //
+  if (playerX < width-(screenRestiction/2)) {
+    if (keyIsDown(RIGHT_ARROW)) {
+      playerX += playerMovementSpeed;
+    }
   }
-  else if (keyIsDown(RIGHT_ARROW)) {
-    playerX += playerMovementSpeed;
+  if (playerX > screenRestiction/2 ) {
+    if (keyIsDown(LEFT_ARROW)) {
+      playerX -= playerMovementSpeed;
+    }
   }
-
-  // Movement Restriction //
 }
+
 
 function spaceInvader() {
   rect(invaderX, invaderY, iconSize, iconSize);
   spaceInvaderStatePicker();
+
+  // Left, Right and Down movement for Invader //
   if (invaderX > width-60) {
     invaderState = 2;
+    invaderY += iconSize;
   }
   else if (invaderX < 60) {
     invaderState = 1;
+    invaderY += iconSize;
   }
 }
 
@@ -80,7 +92,8 @@ function spaceInvaderStatePicker() {
   }
 }
 
+
 function testArea() {
-  fill('red');
+  fill('green');
   rect(width/2, height/2, width-100, height) ;
 }
