@@ -31,9 +31,9 @@ function setup() {
   // Invader //
   invaderX = round(width/2);
   invaderY = (iconSize/2)*4;
-  invaderMovementSpeed = 1;
+  invaderMovementSpeed = 5;
   invaderState = 1; 
-  invaderTouchesPlayer = false
+  invaderTouchesPlayer = false;
 
   // Player //
   playerX = round(width/2);
@@ -65,12 +65,26 @@ function playerShip() {
       playerX -= playerMovementSpeed;
     }
   }
+  // !!FOR TESTING!! //
+  if (keyIsDown(UP_ARROW)) {
+    playerY -= playerMovementSpeed;
+  }
+  if (keyIsDown(DOWN_ARROW)) {
+    playerY += playerMovementSpeed;
+  }
+  // !!DELETE AT END!! //
 }
 
 
 function spaceInvader() {
+  invaderTouchesPlayer = collideRectRect(invaderX, invaderY, iconSize, iconSize, playerX, playerY, iconSize, iconSize);
   rect(invaderX, invaderY, iconSize, iconSize);
   spaceInvaderStatePicker();
+
+  // What happens if the Invader touches the Player //
+  if (invaderTouchesPlayer === true) {
+    rect(50,50,50,50);
+  }
 
   // Left, Right and Down movement for Invader //
   if (invaderX > width-60) {
@@ -94,6 +108,6 @@ function spaceInvaderStatePicker() {
 
 
 function testArea() {
-  fill('green');
+  fill('purple');
   rect(width/2, height/2, width-100, height) ;
 }
