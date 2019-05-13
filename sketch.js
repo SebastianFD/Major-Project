@@ -17,7 +17,7 @@ let invaderTouchesPlayer;
 let iconSize;
 let screenRestiction;
 let restriction;
-
+let gameState;
 
 function setup() {
   rectMode(CENTER);
@@ -51,10 +51,12 @@ function draw() {
 }
 
 
+
+// PLAYER //
 function playerShip() {
   rect(playerX, playerY, iconSize, iconSize);
 
-  // Ship Movement //
+// Ship Movement //
   if (playerX < width-(screenRestiction/2)) {
     if (keyIsDown(RIGHT_ARROW)) {
       playerX += playerMovementSpeed;
@@ -65,28 +67,35 @@ function playerShip() {
       playerX -= playerMovementSpeed;
     }
   }
-  // !!FOR TESTING!! //
+  if (keyIsPressed(SPACE)) {
+    
+  }
+// !!FOR TESTING!! //
   if (keyIsDown(UP_ARROW)) {
     playerY -= playerMovementSpeed;
   }
   if (keyIsDown(DOWN_ARROW)) {
     playerY += playerMovementSpeed;
   }
-  // !!DELETE AT END!! //
+// !!DELETE AT END!! //
+
 }
 
 
+
+//// INVADER ////
 function spaceInvader() {
   invaderTouchesPlayer = collideRectRect(invaderX, invaderY, iconSize, iconSize, playerX, playerY, iconSize, iconSize);
   rect(invaderX, invaderY, iconSize, iconSize);
   spaceInvaderStatePicker();
 
-  // What happens if the Invader touches the Player //
+// What happens if the Invader touches the Player //
   if (invaderTouchesPlayer === true) {
     rect(50,50,50,50);
+    gameState = "gameOver"
   }
 
-  // Left, Right and Down movement for Invader //
+// Left, Right and Down movement for Invader //
   if (invaderX > width-60) {
     invaderState = 2;
     invaderY += iconSize;
@@ -96,7 +105,6 @@ function spaceInvader() {
     invaderY += iconSize;
   }
 }
-
 function spaceInvaderStatePicker() {
   if (invaderState === 1) {
     invaderX += invaderMovementSpeed;
@@ -110,4 +118,27 @@ function spaceInvaderStatePicker() {
 function testArea() {
   fill('purple');
   rect(width/2, height/2, width-100, height) ;
+}
+
+// Figure out game before you start working out different screens//
+function statesOfGame() {
+  if (gameState === "start") {
+    beginningOfGame();
+  }
+  else if (gameState === "playingGame") {
+    gameplay();
+  }
+  else if (gameState === "gameOver") {
+    gameOverScreen();
+  }
+}
+
+function beginningOfGame() {
+
+}
+function gameplay() {
+
+}
+function gameOverScreen() {
+
 }

@@ -4,9 +4,9 @@ Space Invaders, Galatica, Galaga mash-up
 
 ## Need to Have list
 
-- Player 'ship' & movement
+- Player 'ship' & movement //
 - - destroys invaders
-- Invaders & movement
+- Invaders & movement      //
 - Invaders shooting 
 - - destroys player
 - Multiple Invaders
