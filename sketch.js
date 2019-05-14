@@ -6,6 +6,10 @@
 // Player Variables //
 let playerY, playerX;
 let playerMovementSpeed;
+let playerShot;
+let shotArray = [];
+let movingShotY, movingShotX;
+
 
 // Invaders Variables //
 let invaderY, invaderX;
@@ -39,6 +43,9 @@ function setup() {
   playerX = round(width/2);
   playerY = height-iconSize;
   playerMovementSpeed = 3;
+  movingShotY = playerY;
+  movingShotX = playerX
+  playerShot = false;
 
 }
 
@@ -47,7 +54,10 @@ function draw() {
   testArea(); 
   playerShip();
   spaceInvader();
+  // playerAttack();
+  // keyTyped();
   print(invaderY);
+  shoot();
 }
 
 
@@ -67,9 +77,7 @@ function playerShip() {
       playerX -= playerMovementSpeed;
     }
   }
-  if (keyIsPressed(SPACE)) {
-    
-  }
+
 // !!FOR TESTING!! //
   if (keyIsDown(UP_ARROW)) {
     playerY -= playerMovementSpeed;
@@ -78,8 +86,13 @@ function playerShip() {
     playerY += playerMovementSpeed;
   }
 // !!DELETE AT END!! //
-
 }
+
+// function keyTyped() {
+//   if (key === 'a') {
+//     playerShot = true;
+//   }
+// }
 
 
 
@@ -119,6 +132,17 @@ function testArea() {
   fill('purple');
   rect(width/2, height/2, width-100, height) ;
 }
+
+
+// function playerAttack() {
+//   if (playerShot === true) {
+//     if (movingShotY > 0) {
+//       movingShotY -= 3
+//       rect(movingShotX, movingShotY, 5, 10);
+//       playerShot = false;
+//     }
+//   }
+// }
 
 // Figure out game before you start working out different screens//
 function statesOfGame() {
