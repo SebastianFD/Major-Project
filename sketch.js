@@ -6,9 +6,9 @@
 // Player Variables //
 let playerY, playerX;
 let playerMovementSpeed;
-let playerShot;
-let shotArray = [];
-let movingShotY, movingShotX;
+let playerDead;
+let shotTrueFlase;
+let shotX, shotY;
 
 
 // Invaders Variables //
@@ -26,6 +26,7 @@ let gameState;
 function setup() {
   rectMode(CENTER);
   createCanvas(800, 700);
+  keyTyped()
 
   // Other //
   iconSize = 20;
@@ -43,10 +44,10 @@ function setup() {
   playerX = round(width/2);
   playerY = height-iconSize;
   playerMovementSpeed = 3;
-  movingShotY = playerY;
-  movingShotX = playerX
-  playerShot = false;
-
+  playerDead = 0;
+  shotTrueFlase = false;
+  shotX = playerX;
+  shotY = playerY;
 }
 
 function draw() {
@@ -54,17 +55,19 @@ function draw() {
   testArea(); 
   playerShip();
   spaceInvader();
-  // playerAttack();
-  // keyTyped();
   print(invaderY);
-  shoot();
+
 }
 
 
 
-// PLAYER //
+
+
+
+//// PLAYER START //
 function playerShip() {
   rect(playerX, playerY, iconSize, iconSize);
+
 
 // Ship Movement //
   if (playerX < width-(screenRestiction/2)) {
@@ -77,8 +80,7 @@ function playerShip() {
       playerX -= playerMovementSpeed;
     }
   }
-
-// !!FOR TESTING!! //
+  // !!FOR TESTING!! //
   if (keyIsDown(UP_ARROW)) {
     playerY -= playerMovementSpeed;
   }
@@ -86,17 +88,49 @@ function playerShip() {
     playerY += playerMovementSpeed;
   }
 // !!DELETE AT END!! //
+// movement end //
+
+
+
+// Ship shooting //
+  if (shotTrueFlase === true) {
+    if (shotY > 0) {
+      rect(shotX, shotY, 5, 10) 
+      shotY --
+    }
+    else {
+      shotTrueFlase = false;
+    }
+  }
+
+
+
+
+
+
+
+// Shooting end //
+
+
+}
+function keyTyped() {
+  if (key === 'a') {
+    shotTrueFlase = true;
+  }
 }
 
-// function keyTyped() {
-//   if (key === 'a') {
-//     playerShot = true;
-//   }
-// }
+//// PLAYER END ////
 
 
 
-//// INVADER ////
+
+
+
+
+
+
+//// INVADER START ////
+
 function spaceInvader() {
   invaderTouchesPlayer = collideRectRect(invaderX, invaderY, iconSize, iconSize, playerX, playerY, iconSize, iconSize);
   rect(invaderX, invaderY, iconSize, iconSize);
@@ -104,9 +138,11 @@ function spaceInvader() {
 
 // What happens if the Invader touches the Player //
   if (invaderTouchesPlayer === true) {
-    rect(50,50,50,50);
+    playerX = playerDead;
+    playerY = playerDead;
     gameState = "gameOver"
   }
+// touch end //
 
 // Left, Right and Down movement for Invader //
   if (invaderX > width-60) {
@@ -126,23 +162,32 @@ function spaceInvaderStatePicker() {
     invaderX -= invaderMovementSpeed;
   }
 }
+// Movement end //
+
+//// INVADER END////
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 function testArea() {
   fill('purple');
   rect(width/2, height/2, width-100, height) ;
 }
-
-
-// function playerAttack() {
-//   if (playerShot === true) {
-//     if (movingShotY > 0) {
-//       movingShotY -= 3
-//       rect(movingShotX, movingShotY, 5, 10);
-//       playerShot = false;
-//     }
-//   }
-// }
 
 // Figure out game before you start working out different screens//
 function statesOfGame() {
