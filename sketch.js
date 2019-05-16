@@ -46,7 +46,6 @@ function setup() {
   playerMovementSpeed = 3;
   playerDead = 0;
   shotTrueFlase = false;
-  shotX = playerX;
   shotY = playerY;
 }
 
@@ -55,7 +54,7 @@ function draw() {
   testArea(); 
   playerShip();
   spaceInvader();
-  print(invaderY);
+  print(shotX);
 
 }
 
@@ -66,6 +65,7 @@ function draw() {
 
 //// PLAYER START //
 function playerShip() {
+
   rect(playerX, playerY, iconSize, iconSize);
 
 
@@ -95,12 +95,15 @@ function playerShip() {
 // Ship shooting //
   if (shotTrueFlase === true) {
     if (shotY > 0) {
-      rect(shotX, shotY, 5, 10) 
-      shotY --
+      shotX = playerX;
+      rect(shotX, shotY, 5, 10);
+      shotY -= 3;
     }
-    else {
+    else if (shotY < 0) {
       shotTrueFlase = false;
+      shotY = playerY;
     }
+
   }
 
 
@@ -114,7 +117,7 @@ function playerShip() {
 
 }
 function keyTyped() {
-  if (key === 'a') {
+  if (key === ' ') {
     shotTrueFlase = true;
   }
 }
