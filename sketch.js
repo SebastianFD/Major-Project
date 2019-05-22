@@ -37,7 +37,7 @@ function setup() {
   // Invader //
   invaderX = round(width/2);
   invaderY = (iconSize/2)*4;
-  invaderMovementSpeed = 10;
+  invaderMovementSpeed = 5;
   invaderState = 1; 
   invaderDead = 0;
   invaderTouchesPlayer = false;
@@ -53,6 +53,7 @@ function setup() {
 }
 
 function draw() {
+
   background(0);
   testArea(); 
   playerShip();
@@ -71,7 +72,7 @@ function playerShip() {
 
   rect(playerX, playerY, iconSize, iconSize);
 
-
+  
 // Ship Movement //
   if (playerX < width-(screenRestiction/2)) {
     if (keyIsDown(RIGHT_ARROW)) {
@@ -94,12 +95,11 @@ function playerShip() {
   if (shotTrueFlase === true) {
     if (playerShotY > 0) {
       rect(playerShotX, playerShotY, shotWidth, shotHeight);
-      playerShotY -= 5;
+      playerShotY -= 10;
     }
     else if (playerShotY <= 0) {
       shotTrueFlase = false;
       playerShotY = playerY;
-
     }
   }
 }
@@ -116,9 +116,6 @@ function keyTyped() {
 
 
 
-
-
-
 //// INVADER START ////
 
 function spaceInvader() {
@@ -128,8 +125,7 @@ function spaceInvader() {
   playerShotTouches = collideRectRect(playerShotX, playerShotY, shotWidth, shotHeight, 
                                       invaderX,    invaderY,    iconSize,  iconSize);
   if (playerShotTouches === true) {
-    invaderX = 0;
-    invaderY = 0;
+    invaderMovementSpeed = 0;
   }
   
   invaderTouchesPlayer = collideRectRect(invaderX, invaderY, iconSize, iconSize, 
@@ -137,6 +133,25 @@ function spaceInvader() {
 
   rect(invaderX, invaderY, iconSize, iconSize);
   spaceInvaderStatePicker();
+
+// // Invader shot//
+
+//   if (invaderShotTrueFalse === true) {
+//     if (invaderShotY < height) {
+//       rect(invaderShotX, invaderShotY, shotWidth, shotHeight);
+//       invaderShotY -= 10;
+//     }
+//     else if (playerShotY >= height) {
+//       invaderShotTrueFalse = false;
+//       invaderShotY = invaderY;
+//     }
+//   }
+    
+
+
+
+
+
 
 // What happens if the Invader touches the Player //
   if (invaderTouchesPlayer === true) {
@@ -164,9 +179,6 @@ function spaceInvaderStatePicker() {
     invaderX -= invaderMovementSpeed;
   }
 }
-
-
-
 
 
 
