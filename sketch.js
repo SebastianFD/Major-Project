@@ -10,6 +10,7 @@ let playerDead;
 let shotTrueFlase;
 let playerShotX, playerShotY;
 let playerShotTouches;
+let playerSize;
 
 
 // Invaders Variables //
@@ -17,6 +18,8 @@ let invaderY, invaderX;
 let invaderMovementSpeed;
 let invaderState;
 let invaderTouchesPlayer;
+let invaderSize;
+let invaderShotTrueFalse;
 
 // Other Variables //
 let iconSize;
@@ -37,10 +40,12 @@ function setup() {
   // Invader //
   invaderX = round(width/2);
   invaderY = (iconSize/2)*4;
-  invaderMovementSpeed = 5;
+  invaderMovementSpeed = 0;
   invaderState = 1; 
   invaderDead = 0;
   invaderTouchesPlayer = false;
+  invaderSize = iconSize;
+  invaderShotTrueFalse = false;
 
   // Player //
   playerX = round(width/2);
@@ -50,6 +55,7 @@ function setup() {
   shotTrueFlase = false;
   playerShotY = playerY;
   playerShotTouches = false;
+  playerSize = iconSize;
 }
 
 function draw() {
@@ -70,7 +76,7 @@ function draw() {
 //// PLAYER START //
 function playerShip() {
 
-  rect(playerX, playerY, iconSize, iconSize);
+  rect(playerX, playerY, playerSize, playerSize);
 
   
 // Ship Movement //
@@ -123,29 +129,30 @@ function spaceInvader() {
   shotHeight = 10;
 
   playerShotTouches = collideRectRect(playerShotX, playerShotY, shotWidth, shotHeight, 
-                                      invaderX,    invaderY,    iconSize,  iconSize);
+                                      invaderX,    invaderY,  invaderSize, invaderSize);
   if (playerShotTouches === true) {
     invaderMovementSpeed = 0;
+    invaderSize = 0;
   }
   
-  invaderTouchesPlayer = collideRectRect(invaderX, invaderY, iconSize, iconSize, 
-                                         playerX,  playerY,  iconSize, iconSize);
+  invaderTouchesPlayer = collideRectRect(invaderX, invaderY, invaderSize, invaderSize, 
+                                         playerX,  playerY,  playerSize, playerSize);
 
-  rect(invaderX, invaderY, iconSize, iconSize);
+  rect(invaderX, invaderY, invaderSize, invaderSize);
   spaceInvaderStatePicker();
 
-// // Invader shot//
+// Invader shot//
 
-//   if (invaderShotTrueFalse === true) {
-//     if (invaderShotY < height) {
-//       rect(invaderShotX, invaderShotY, shotWidth, shotHeight);
-//       invaderShotY -= 10;
-//     }
-//     else if (playerShotY >= height) {
-//       invaderShotTrueFalse = false;
-//       invaderShotY = invaderY;
-//     }
-//   }
+  if (invaderShotTrueFalse === true) {
+    if (invaderShotY < height) {
+      rect(invaderShotX, invaderShotY, shotWidth, shotHeight);
+      invaderShotY -= 10;
+    }
+    else if (invaderShotY >= height) {
+      invaderShotTrueFalse = false;
+      invaderShotY = invaderY;
+    }
+  }
     
 
 
@@ -164,11 +171,11 @@ function spaceInvader() {
 // Left, Right and Down movement for Invader //
   if (invaderX > width-60) {
     invaderState = 2;
-    invaderY += iconSize;
+    invaderY += invaderSize;
   }
   else if (invaderX < 60) {
     invaderState = 1;
-    invaderY += iconSize;
+    invaderY += invaderSize;
   }
 }
 function spaceInvaderStatePicker() {
@@ -197,7 +204,7 @@ function spaceInvaderStatePicker() {
 
 function testArea() {
   fill('purple');
-  rect(width/2, height/2, width-100, height) ;
+  rect(width/2, height/2, width-100, height);
 }
 
 // Figure out game before you start working out different screens//
