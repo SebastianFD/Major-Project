@@ -5,27 +5,31 @@
 
 // Player Variables //
 let playerY, playerX;
+let playerSize;
 let playerMovementSpeed;
-let playerDead;
 let shotTrueFlase;
 let playerShotX, playerShotY;
 let playerShotTouches;
-let playerSize;
+let playerDead;
 
 
 // Invaders Variables //
 let invaderY, invaderX;
+let invaderSize;
 let invaderMovementSpeed;
 let invaderState;
-let invaderTouchesPlayer;
-let invaderSize;
 let invaderShotTrueFalse;
+let invaderShotX, invaderShotY;
+let invaderShotTouches;
+let invaderTouchesPlayer;
+
 
 // Other Variables //
 let iconSize;
 let screenRestiction;
 let restriction;
 let gameState;
+let shotSpeed;
 
 function setup() {
   rectMode(CENTER);
@@ -36,16 +40,22 @@ function setup() {
   iconSize = 20;
   screenRestiction = 100;
   restriction = (width - screenRestiction) - iconSize;
+  shotWidth = 5;
+  shotHeight = 10
+  shotSpeed = 5;
 
   // Invader //
   invaderX = round(width/2);
   invaderY = (iconSize/2)*4;
-  invaderMovementSpeed = 0;
+  invaderMovementSpeed = 1;
   invaderState = 1; 
   invaderDead = 0;
   invaderTouchesPlayer = false;
   invaderSize = iconSize;
-  invaderShotTrueFalse = false;
+  invaderShotTrueFalse = true;
+  invaderShotX = invaderX;
+  invaderShotY = invaderY;
+  invaderShotTouches = false;
 
   // Player //
   playerX = round(width/2);
@@ -62,9 +72,10 @@ function draw() {
 
   background(0);
   testArea(); 
-  playerShip();
   spaceInvader();
-  print(playerShotY);
+  playerShip();
+
+  print(invaderShotX);
 
 }
 
@@ -78,7 +89,13 @@ function playerShip() {
 
   rect(playerX, playerY, playerSize, playerSize);
 
-  
+  playerShotTouches = collideRectRect(playerShotX, playerShotY, shotWidth, shotHeight, 
+                                      invaderX,    invaderY,  invaderSize, invaderSize);
+  if (playerShotTouches === true) {
+  invaderMovementSpeed = 0;
+  invaderSize = 0;
+}
+
 // Ship Movement //
   if (playerX < width-(screenRestiction/2)) {
     if (keyIsDown(RIGHT_ARROW)) {
@@ -90,20 +107,20 @@ function playerShip() {
       playerX -= playerMovementSpeed;
     }
   }
-  if (keyIsDown(UP_ARROW)) {
-    playerY -= playerMovementSpeed;
-  }
-  if (keyIsDown(DOWN_ARROW)) {
-    playerY += playerMovementSpeed;
-  }
+  // if (keyIsDown(UP_ARROW)) {
+  //   playerY -= playerMovementSpeed;
+  // }
+  // if (keyIsDown(DOWN_ARROW)) {
+  //   playerY += playerMovementSpeed;
+  // }
 
 // Ship shooting //
   if (shotTrueFlase === true) {
     if (playerShotY > 0) {
       rect(playerShotX, playerShotY, shotWidth, shotHeight);
-      playerShotY -= 10;
+      playerShotY -= shotSpeed;
     }
-    else if (playerShotY <= 0) {
+    else if (playerShotY <= 0 || playerShotTouches === true) {
       shotTrueFlase = false;
       playerShotY = playerY;
     }
@@ -120,40 +137,32 @@ function keyTyped() {
 
 
 
-
-
 //// INVADER START ////
 
+
 function spaceInvader() {
-  shotWidth = 5;
-  shotHeight = 10;
 
-  playerShotTouches = collideRectRect(playerShotX, playerShotY, shotWidth, shotHeight, 
-                                      invaderX,    invaderY,  invaderSize, invaderSize);
-  if (playerShotTouches === true) {
-    invaderMovementSpeed = 0;
-    invaderSize = 0;
-  }
-  
-  invaderTouchesPlayer = collideRectRect(invaderX, invaderY, invaderSize, invaderSize, 
-                                         playerX,  playerY,  playerSize, playerSize);
-
-  rect(invaderX, invaderY, invaderSize, invaderSize);
   spaceInvaderStatePicker();
+  rect(invaderX, invaderY, invaderSize, invaderSize);
+
+
+
+  invaderTouchesPlayer = collideRectRect(invaderX, invaderY, invaderSize, invaderSize, 
+                                         playerX,  playerY,  playerSize,  playerSize);
+
+  invaderShotTouches = collideRectRect(invaderShotX, invaderShotY, shotWidth, shotHeight,
+                                       playerX,      playerShotY,  playerSize, playerSize);
 
 // Invader shot//
 
   if (invaderShotTrueFalse === true) {
-    if (invaderShotY < height) {
-      rect(invaderShotX, invaderShotY, shotWidth, shotHeight);
-      invaderShotY -= 10;
-    }
-    else if (invaderShotY >= height) {
-      invaderShotTrueFalse = false;
-      invaderShotY = invaderY;
+    rect(invaderShotX, invaderShotY, shotWidth, shotHeight)
+    invaderShotX = invaderX;
+    invaderShotY = invaderY;
+    if (invaderShotY <= height) {
+      invaderShotY += shotSpeed;
     }
   }
-    
 
 
 
@@ -164,7 +173,7 @@ function spaceInvader() {
   if (invaderTouchesPlayer === true) {
     playerX = playerDead;
     playerY = playerDead;
-    gameState = "gameOver"
+    gameState = "gameOver";
   }
 
 
