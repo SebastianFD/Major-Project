@@ -30,6 +30,7 @@ let screenRestiction;
 let restriction;
 let gameState;
 let shotSpeed;
+let shotWidth,shotHeight;
 
 function setup() {
   rectMode(CENTER);
@@ -40,19 +41,19 @@ function setup() {
   iconSize = 20;
   screenRestiction = 100;
   restriction = (width - screenRestiction) - iconSize;
-  shotWidth = 5;
-  shotHeight = 10
+  shotWidth = iconSize/4;
+  shotHeight = iconSize/2;
   shotSpeed = 5;
 
   // Invader //
   invaderX = round(width/2);
   invaderY = (iconSize/2)*4;
-  invaderMovementSpeed = 1;
+  invaderMovementSpeed = 0;
   invaderState = 1; 
   invaderDead = 0;
   invaderTouchesPlayer = false;
   invaderSize = iconSize;
-  invaderShotTrueFalse = true;
+  invaderShotTrueFalse = false;
   invaderShotX = invaderX;
   invaderShotY = invaderY;
   invaderShotTouches = false;
@@ -155,12 +156,20 @@ function spaceInvader() {
 
 // Invader shot//
 
-  if (invaderShotTrueFalse === true) {
-    rect(invaderShotX, invaderShotY, shotWidth, shotHeight)
-    invaderShotX = invaderX;
-    invaderShotY = invaderY;
-    if (invaderShotY <= height) {
+  if (invaderShotTrueFalse === false) {
+    if (invaderShotX + 50 > playerX && invaderShotX + 50 < playerX) {
+      invaderShotX = invaderX;
+      invaderShotY = invaderY;
+      invaderShotTrueFalse = true;
+    }
+  }
+  else if (invaderShotTrueFalse === true) {
+    if (invaderShotY < height) {
+      rect(invaderShotX, invaderShotY, shotWidth, shotHeight)
       invaderShotY += shotSpeed;
+    }
+    else if (invaderShotY >= height) {
+      invaderShotTrueFalse = false;
     }
   }
 
@@ -178,13 +187,15 @@ function spaceInvader() {
 
 
 // Left, Right and Down movement for Invader //
-  if (invaderX > width-60) {
-    invaderState = 2;
-    invaderY += invaderSize;
-  }
-  else if (invaderX < 60) {
-    invaderState = 1;
-    invaderY += invaderSize;
+  if (invaderY <= height) {
+    if (invaderX > width-60) {
+      invaderState = 2;
+      invaderY += invaderSize;
+    }
+    else if (invaderX < 60) {
+      invaderState = 1;
+      invaderY += invaderSize;
+    }
   }
 }
 function spaceInvaderStatePicker() {
