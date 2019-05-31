@@ -8,8 +8,8 @@ Space Invaders, Galatica, Galaga mash-up
 - Player shooting                       //
 - - destroys invaders                   //
 - Invaders & movement                   //
-- Invaders shooting
-- - destroys player (touch & shooting)
+- Invaders shooting                     //
+- - destroys player (touch & shooting)  //
 - Multiple Invaders
 - Game states
 - - Title Screen
