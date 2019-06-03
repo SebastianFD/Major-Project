@@ -23,6 +23,12 @@ let invaderShotX, invaderShotY;
 let invaderShotTouches;
 let invaderTouchesPlayer;
 
+// Button //
+let buttonX;
+let buttonY;
+let buttonWidth;
+let buttonHeight;
+
 
 // Other Variables //
 let iconSize;
@@ -44,6 +50,7 @@ function setup() {
   shotWidth = iconSize/4;
   shotHeight = iconSize/2;
   shotSpeed = 5;
+  gameState = "start";
   
 
   // Invader //
@@ -68,13 +75,18 @@ function setup() {
   playerShotY = playerY;
   playerShotTouches = false;
   playerSize = iconSize;
+
+  // Button //
+  buttonX = width/2;
+  buttonY = height/2;
+  buttonWidth = 100;
+  buttonHeight = 50;
 }
 
 function draw() {
   background(0);
   statesOfGame();
 
-  print(invaderShotTouches);
 
 }
 
@@ -205,15 +217,27 @@ function spaceInvaderStatePicker() {
 }
 
 function startButton() {
-  rect(width/2, height/2, 100, 50)
+  rect(buttonX, buttonY, buttonWidth, buttonHeight)
+  // if () {
+
+  // }
 }
 
+function mousePressed() {
+  if (gameState === "start") {
+    if (clickedOnButton(mouseX, mouseY)) {
+      gameState = "playingGame";
+    }
+  }
+}
 
+function clickedOnButton(x, y) {
+  return x >= buttonX - buttonWidth/2 &&
+         x <= buttonX + buttonWidth/2 &&
+         y >= buttonY - buttonHeight/2 &&
+         y <= buttonY + buttonHeight/2;
 
-
-
-
-
+}
 
 
 
