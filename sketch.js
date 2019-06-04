@@ -131,7 +131,7 @@ function playerShip() {
       rect(playerShotX, playerShotY, shotWidth, shotHeight);
       playerShotY -= shotSpeed;
     }
-    else if (playerShotY <= 0 || playerShotTouches === true) {
+    if (playerShotY <= 0 || playerShotTouches === true) {
       shotTrueFlase = false;
       playerShotY = playerY;
     }
@@ -143,6 +143,15 @@ function keyTyped() {
     playerShotX = playerX;
   }
 }
+
+
+
+
+
+
+
+
+
 
 
 
@@ -161,6 +170,15 @@ function spaceInvader() {
 
   invaderShotTouches = collideRectRect(invaderShotX, invaderShotY, shotWidth, shotHeight,
                                        playerX,      playerShotY,  playerSize, playerSize);
+
+
+
+
+
+
+
+
+  
 // Invader shot//
   if (invaderShotTrueFalse === false) {
     if (invaderX === playerX) {
@@ -216,6 +234,28 @@ function spaceInvaderStatePicker() {
   }
 }
 
+function multipleInvaders() {
+  let number = [1, 2, 3];
+
+  for (i = 0; i < number.length; i++) {
+    number[i].x ++;
+  }
+
+  
+  console.log(number);
+}
+
+
+
+
+
+
+
+
+
+
+
+
 function startButton() {
   rect(buttonX, buttonY, buttonWidth, buttonHeight)
   // if () {
@@ -267,11 +307,18 @@ function statesOfGame() {
 function beginningOfGame() {
   startButton();
 }
+
+function getReady() {
+  
+}
+
 function gameplay() {
   testArea(); 
   spaceInvader();
+  multipleInvaders() 
   playerShip();
 }
 function gameOverScreen() {
 
 }
+
