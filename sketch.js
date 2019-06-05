@@ -214,38 +214,62 @@ function spaceInvader() {
 
 
 // Left, Right and Down movement for Invader //
-  if (invaderY <= height) {
-    if (invaderX > width-60) {
-      invaderState = 2;
-      invaderY += invaderSize;
+  // if (invaderY <= height) {
+  //   if (invaderX > width-60) {
+  //     invaderState = 2;
+  //     invaderY += invaderSize;
+  //   }
+  //   else if (invaderX < 60) {
+  //     invaderState = 1;
+  //     invaderY += invaderSize;
+  //   }
+  // }
+}
+// function spaceInvaderStatePicker() {
+//   if (invaderState === 1) {
+//     invaderX += invaderMovementSpeed;
+//   }
+//   else if (invaderState === 2) {
+//     invaderX -= invaderMovementSpeed;
+//   }
+// }
+
+
+class multiInvader {
+  constructor (x, y, s) {
+    this.x = x;
+    this.y = y;
+    this.s = s;
+  }
+  // s = size //
+
+  display () {
+    fill();
+    stroke();
+    rect(x, y, s, s);
+  }
+
+  movement () {
+    if (y <= height) {
+      if (x > width-60) {
+        invaderState = 2;
+        y += s;
+      }
+      else if (x < 60) {
+        invaderState = 1;
+        y += s;
+      }
     }
-    else if (invaderX < 60) {
-      invaderState = 1;
-      invaderY += invaderSize;
+  }
+  InvaderSP() {
+    if (invaderState === 1) {
+      x += invaderMovementSpeed;
+    }
+    else if (invaderState === 2) {
+      x -= invaderMovementSpeed;
     }
   }
 }
-function spaceInvaderStatePicker() {
-  if (invaderState === 1) {
-    invaderX += invaderMovementSpeed;
-  }
-  else if (invaderState === 2) {
-    invaderX -= invaderMovementSpeed;
-  }
-}
-
-function multipleInvaders() {
-  let number = [1, 2, 3];
-
-  for (i = 0; i < number.length; i++) {
-    number[i].x ++;
-  }
-
-  
-  console.log(number);
-}
-
-
 
 
 
@@ -315,7 +339,6 @@ function getReady() {
 function gameplay() {
   testArea(); 
   spaceInvader();
-  multipleInvaders() 
   playerShip();
 }
 function gameOverScreen() {
