@@ -37,11 +37,16 @@ let screenRestiction;
 let restriction;
 let gameState;
 let shotSpeed;
+let invaderShotSpeed;
 let shotWidth,shotHeight;
 
 
                                           //multiinvader test ///
 let theInvadersRowOne = [];
+let theInvadersRowTwo = [];
+let theInvadersRowThree = [];
+let theInvadersRowFour = [];
+let theInvadersRowFive = [];
 
 class multiInvaderRowOne {
   constructor (x, y, s) {
@@ -60,6 +65,7 @@ class multiInvaderRowOne {
 
   display() {
     rect(this.x, this.y, this.s, this.s);
+
   }
 
   movement() {
@@ -84,7 +90,7 @@ class multiInvaderRowOne {
   }
   gettingShot() {
     playerShotTouches = collideRectRect(playerShotX, playerShotY, shotWidth, shotHeight, 
-      this.x,    this.y,  this.s, this.s);
+                                        this.x,    this.y,  this.s, this.s);
     if (playerShotTouches === true) {
       this.invaderMovementSpeed = 0;
       this.s = 0; 
@@ -98,10 +104,10 @@ class multiInvaderRowOne {
   }
   damageToPlayer() {
     this.invaderTouchesPlayer = collideRectRect(this.x, this.y, this.s, this.s, 
-      playerX,  playerY,  playerSize,  playerSize);
+                                                playerX,  playerY,  playerSize,  playerSize);
 
-    this.invaderShotTouches = collideRectRect(invaderShotX, invaderShotY, shotWidth, shotHeight,
-    playerX,      playerShotY,  playerSize, playerSize);
+    this.invaderShotTouches = collideRectRect(this.invaderShotX, this.invaderShotY, shotWidth, shotHeight,
+                                              playerX,           playerY,           playerSize,playerSize);
 
     if (this.invaderShotTrueFalse === false) {
       if (this.x === playerX) {
@@ -113,7 +119,7 @@ class multiInvaderRowOne {
     else if (this.invaderShotTrueFalse === true) {
       if (this.invaderShotY < height) {
         rect(this.invaderShotX, this.invaderShotY, shotWidth, shotHeight);
-        this.invaderShotY += shotSpeed;
+        this.invaderShotY += invaderShotSpeed;
       }
       if (this.invaderShotY >= height || this.invaderShotTouches === true) {
         this.invaderShotTrueFalse = false;
@@ -138,6 +144,7 @@ class multiInvaderRowOne {
 
 
 
+
                                           /// SETUP ///
 function setup() {
   rectMode(CENTER);
@@ -152,6 +159,7 @@ function setup() {
   shotWidth = iconSize/4;
   shotHeight = iconSize/2;
   shotSpeed = 10;
+  invaderShotSpeed = 8;
   gameState = "start";
   
 
@@ -181,13 +189,13 @@ function setup() {
 
                                                   // Button //
   buttonX = width/2;
-  buttonY = height/2;
+  buttonY = height/3;
   buttonWidth = 100;
   buttonHeight = 50;
 
   for (let i=0; i<numberOfInvaders; i++) {
-    let someInvader = new multiInvaderRowOne(200 + (invaderSize*2)*i, invaderY, invaderSize);
-    theInvadersRowOne.push(someInvader);
+    let someInvaderOne = new multiInvaderRowOne(200 + (invaderSize*2)*i, invaderY, invaderSize);
+    theInvadersRowOne.push(someInvaderOne);
   }
   
 }
@@ -201,20 +209,17 @@ function draw() {
 
 
 
-
-
-
                                                   //// PLAYER START //
 function playerShip() {
 
   rect(playerX, playerY, playerSize, playerSize);
 
-  playerShotTouches = collideRectRect(playerShotX, playerShotY, shotWidth, shotHeight, 
-                                      invaderX,    invaderY,  invaderSize, invaderSize);
-  if (playerShotTouches === true) {
-  invaderMovementSpeed = 0;
-  invaderSize = 0;
-  }
+  // playerShotTouches = collideRectRect(playerShotX, playerShotY, shotWidth, shotHeight, 
+  //                                     invaderX,    invaderY,  invaderSize, invaderSize);
+  // if (playerShotTouches === true) {
+  // invaderMovementSpeed = 0;
+  // invaderSize = 0;
+  // }
 
                                                         // Ship Movement //
   if (playerX < width-(screenRestiction/2)) {
@@ -227,12 +232,12 @@ function playerShip() {
       playerX -= playerMovementSpeed;
     }
   }
-  if (keyIsDown(UP_ARROW)) {
-    playerY -= playerMovementSpeed;
-  }
-  if (keyIsDown(DOWN_ARROW)) {
-    playerY += playerMovementSpeed;
-  }
+  // if (keyIsDown(UP_ARROW)) {
+  //   playerY -= playerMovementSpeed;
+  // }
+  // if (keyIsDown(DOWN_ARROW)) {
+  //   playerY += playerMovementSpeed;
+  // }
 
                                                         // Ship shooting //
   if (shotTrueFlase === true) {
@@ -273,7 +278,6 @@ function keyTyped() {
 function spaceInvader() {
 
   spaceInvaderStatePicker();
-  rect(invaderX, invaderY, invaderSize, invaderSize);
 
   invaderTouchesPlayer = collideRectRect(invaderX, invaderY, invaderSize, invaderSize, 
                                          playerX,  playerY,  playerSize,  playerSize);
@@ -405,7 +409,6 @@ function beginningOfGame() {
 
 function gameplay() {
   testArea(); 
-  // spaceInvader();
   playerShip();
   for (let i = 0; i < theInvadersRowOne.length; i++) {
     theInvadersRowOne[i].movement();
@@ -413,9 +416,12 @@ function gameplay() {
     theInvadersRowOne[i].display();
     theInvadersRowOne[i].gettingShot();
     theInvadersRowOne[i].damageToPlayer();
+    
   }
+  console.log(theInvadersRowOne.length)
 }
 function gameIsOver() {
-
+  textSize(50);
+  text("Game Over", width/3, height/2);
 }
 
