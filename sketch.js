@@ -211,7 +211,7 @@ function draw() {
 
                                                   //// PLAYER START //
 function playerShip() {
-
+  fill("white")
   rect(playerX, playerY, playerSize, playerSize);
 
   // playerShotTouches = collideRectRect(playerShotX, playerShotY, shotWidth, shotHeight, 
@@ -222,22 +222,24 @@ function playerShip() {
   // }
 
                                                         // Ship Movement //
-  if (playerX < width-(screenRestiction/2)) {
-    if (keyIsDown(RIGHT_ARROW)) {
-      playerX += playerMovementSpeed;
+  if (gameState === "playingGame") {
+    if (playerX < width-(screenRestiction/2)) {
+      if (keyIsDown(RIGHT_ARROW)) {
+        playerX += playerMovementSpeed;
+      }
     }
-  }
-  if (playerX > screenRestiction/2 ) {
-    if (keyIsDown(LEFT_ARROW)) {
-      playerX -= playerMovementSpeed;
+    if (playerX > screenRestiction/2 ) {
+      if (keyIsDown(LEFT_ARROW)) {
+        playerX -= playerMovementSpeed;
+      }
     }
-  }
   // if (keyIsDown(UP_ARROW)) {
   //   playerY -= playerMovementSpeed;
   // }
   // if (keyIsDown(DOWN_ARROW)) {
   //   playerY += playerMovementSpeed;
   // }
+  }
 
                                                         // Ship shooting //
   if (shotTrueFlase === true) {
@@ -365,7 +367,12 @@ function startButton() {
 function mousePressed() {
   if (gameState === "start") {
     if (clickedOnButton(mouseX, mouseY)) {
-      gameState = "playingGame";
+      gameState = "ready";
+    }
+  }
+  else if(gameState === "gameOver") {
+    if (clickedOnButton(mouseX, mouseY)){
+      gameState = "start";
     }
   }
 }
@@ -395,17 +402,37 @@ function statesOfGame() {
   if (gameState === "start") {
     beginningOfGame();
   }
+  if (gameState === "ready") {
+    getReady();
+  }
   else if (gameState === "playingGame") {
     gameplay();
   }
   else if (gameState === "gameOver") {
-    gameIsOver()
+    gameIsOver();
   }
 }
 
 function beginningOfGame() {
+  fill("white");
   startButton();
+  textSize(50);
+  text("Press Button to start", width/5, height/2);
 }
+
+function getReady() {
+  getReadyText();
+  playerX = round(width/2);
+  playerY = height-iconSize;
+  playerSize = iconSize;
+  rect(playerX, playerY, playerSize, playerSize);
+  
+  fill("black");
+  textAlign(CENTER, CENTER);
+  textSize(50);
+  text("Get Ready", width/3, height/2, width);
+}
+
 
 function gameplay() {
   testArea(); 
@@ -421,7 +448,12 @@ function gameplay() {
   console.log(theInvadersRowOne.length)
 }
 function gameIsOver() {
+  fill("white")
   textSize(50);
   text("Game Over", width/3, height/2);
 }
 
+function getReadyText() {
+  fill("white")
+  rect(width/2, height/2, 300, 100)
+}
