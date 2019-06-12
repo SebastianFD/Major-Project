@@ -367,7 +367,7 @@ function startButton() {
 function mousePressed() {
   if (gameState === "start") {
     if (clickedOnButton(mouseX, mouseY)) {
-      gameState = "ready";
+      gameState = "playingGame";
     }
   }
   else if(gameState === "gameOver") {
