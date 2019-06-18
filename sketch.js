@@ -41,12 +41,9 @@ let invaderShotSpeed;
 let shotWidth,shotHeight;
 
 
-                                          //multiinvader test ///
+                                        // Multiple invader class //
+
 let theInvadersRowOne = [];
-let theInvadersRowTwo = [];
-let theInvadersRowThree = [];
-let theInvadersRowFour = [];
-let theInvadersRowFive = [];
 
 class multiInvaderRowOne {
   constructor (x, y, s) {
@@ -61,7 +58,6 @@ class multiInvaderRowOne {
     this.invaderShotY = this.y;
     this.invaderShotTrueFalse = false;
   }
-  // s = size //
 
   display() {
     rect(this.x, this.y, this.s, this.s);
@@ -145,7 +141,7 @@ class multiInvaderRowOne {
 
 
 
-                                          /// SETUP ///
+                                                          /// SETUP ///
 function setup() {
   rectMode(CENTER);
   createCanvas(800, 700);
@@ -153,7 +149,7 @@ function setup() {
   textAlign(CENTER, CENTER)
 
 
-                                                  // Other //
+                                                               // Other //
   iconSize = 20;
   screenRestiction = 100;
   restriction = (width - screenRestiction) - iconSize;
@@ -164,7 +160,7 @@ function setup() {
   gameState = "start";
   
 
-                                                   // Invader //
+                                                                   // Invader //
   invaderX = round(width/2);
   invaderY = (iconSize/2)*10;
   invaderMovementSpeed = 2;
@@ -178,7 +174,7 @@ function setup() {
   invaderShotTouches = false;
   numberOfInvaders = 11;
 
-                                                    // Player //
+                                                           // Player //
   playerX = round(width/2);
   playerY = height-iconSize;
   playerMovementSpeed = 3;
@@ -188,7 +184,7 @@ function setup() {
   playerShotTouches = false;
   playerSize = iconSize;
 
-                                                  // Button //
+                                                           // Button //
   buttonX = width/2;
   buttonY = height/2;
   buttonWidth = 100;
@@ -198,24 +194,20 @@ function setup() {
     let someInvaderOne = new multiInvaderRowOne(200 + (invaderSize*2)*i, invaderY, invaderSize);
     theInvadersRowOne.push(someInvaderOne);
   }
-  
 }
 
-                                                  /// DRAW ///
+                                                                      /// DRAW ///
 function draw() {
   background(0);
   statesOfGame();
-
 }
 
-
-
-                                                  //// PLAYER START //
+                                                                       //// PLAYER START //
 function playerShip() {
   fill("white")
   rect(playerX, playerY, playerSize, playerSize);
 
-                                                        // Ship Movement //
+                                                                          // Ship Movement //
   if (gameState === "playingGame") {
     if (playerX < width-(screenRestiction/2)) {
       if (keyIsDown(RIGHT_ARROW)) {
@@ -229,7 +221,7 @@ function playerShip() {
     }
   }
 
-                                                        // Ship shooting //
+                                                                             // Ship shooting //
   if (shotTrueFlase === true) {
     if (playerShotY > 0) {
       rect(playerShotX, playerShotY, shotWidth, shotHeight);
@@ -248,66 +240,6 @@ function keyTyped() {
   }
 }
 
-
-
-
-
-
-                                                    //// INVADER START ////
-
-
-
-function spaceInvader() {
-
-  spaceInvaderStatePicker();
-
-  invaderTouchesPlayer = collideRectRect(invaderX, invaderY, invaderSize, invaderSize, 
-                                         playerX,  playerY,  playerSize,  playerSize);
-
-  invaderShotTouches = collideRectRect(invaderShotX, invaderShotY, shotWidth, shotHeight,
-                                       playerX,      playerShotY,  playerSize, playerSize);
-
-
-
-
-
-
-
-
-  
-                                                          // Invader shot//
-  if (invaderShotTrueFalse === false) {
-    if (invaderX === playerX) {
-      invaderShotX = invaderX;
-      invaderShotY = invaderY;
-      invaderShotTrueFalse = true;
-    }
-  }
-  else if (invaderShotTrueFalse === true) {
-    if (invaderShotY < height) {
-      rect(invaderShotX, invaderShotY, shotWidth, shotHeight);
-      invaderShotY += shotSpeed;
-    }
-    if (invaderShotY >= height || invaderShotTouches === true) {
-      invaderShotTrueFalse = false;
-      invaderShotY = invaderY;
-      invaderShotX = invaderX;
-    }
-  }
-                                                              // What happens if the Invader's shot or touches the Player //
-  if (invaderTouchesPlayer === true) {
-    playerX = playerDead;
-    playerY = playerDead;
-    playerSize = playerDead;
-    gameState = "gameOver";
-  }
-  else if (invaderShotTouches === true) {
-    playerX = playerDead;
-    playerY = playerDead;
-    playerSize = playerDead;
-    gameState = "gameOver";
-  }
-}
 function spaceInvaderStatePicker() {
   if (invaderState === 1) {
     invaderX += invaderMovementSpeed;
@@ -318,18 +250,7 @@ function spaceInvaderStatePicker() {
 }
 
 
-
-
-
-
-
-
-
-
-
-function startButton() {
-  rect(buttonX, buttonY, buttonWidth, buttonHeight)
-}
+                                                                              // Buttons //
 
 function mousePressed() {
   if (gameState === "start") {
@@ -366,7 +287,7 @@ function clickedOnButtonGetReady(x, y) {
 
 
 
-
+                                                                           // menus //
 
 function testArea() {
   fill('purple');
@@ -389,14 +310,18 @@ function statesOfGame() {
   }
 }
 
+// Different states of the game //
 function beginningOfGame() {
   fill("white");
-  startButton();
+  rect(buttonX, buttonY, buttonWidth, buttonHeight);
   textSize(50);
-  text("Press Button to start", width/2, height/2);
+  text("Press Button to start", width/2, height/3);
+  textSize(25);
+  text("Left and Right Arrow keys to move and Space to shoot", width/2, height/2+40);
 }
 
 function getReady() {
+// resets the possition on everything //
   getReadyText();
   playerX = round(width/2);
   playerY = height-iconSize;
@@ -410,8 +335,13 @@ function getReady() {
   textAlign(CENTER, CENTER);
   textSize(50);
   text("Get Ready", width/2, height/2);
+  textSize(20);
+  text("click box to begin", width/2, height/2-30);
 }
-
+function getReadyText() {
+  fill("white")
+  rect(width/2, height/2, 300, 100)
+}
 
 function gameplay() {
   testArea(); 
@@ -427,12 +357,9 @@ function gameplay() {
   console.log(theInvadersRowOne.length)
 }
 function gameIsOver() {
+  rect(buttonX, buttonY, buttonWidth, buttonHeight);
   fill("white")
   textSize(50);
-  text("Game Over", width/2, height/2);
-}
-
-function getReadyText() {
-  fill("white")
-  rect(width/2, height/2, 300, 100)
+  text("Game Over", width/2, height/3);
+  text("click box to reset", width/2, height/4);
 }
